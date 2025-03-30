@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Conferencing App</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            width: 100%;
+            text-align: center;
+        }
+        #main-container {
+            display: flex;
+            width: 90%;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        #video-frame, #whiteboard-frame, #chat-frame {
+            flex: 1;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #video-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #007bff;
+        }
+        #whiteboard {
+            width: 100%;
+            height: 400px;
+            border: 2px solid #007bff;
+        }
+        #controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #chat-frame {
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #007bff;
+            padding: 10px;
+        }
+        #chat-input {
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Video Conferencing</h1>
+    </header>
+    <div id="main-container">
+        <section id="video-frame">
+            <h2>Video Call</h2>
+            <div id="video-container">
+                <video id="localVideo" autoplay></video>
+                <video id="remoteVideo" autoplay></video>
+            </div>
+        </section>
+        <section id="whiteboard-frame">
+            <h2>Whiteboard</h2>
+            <canvas id="whiteboard"></canvas>
+        </section>
+        <section id="chat-frame">
+            <h2>Chat</h2>
+            <div id="chat-box"></div>
+            <input type="text" id="chat-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </section>
+    </div>
+    <section id="controls">
+        <button onclick="startCall()">Start Call</button>
+        <button onclick="endCall()">End Call</button>
+        <button onclick="shareScreen()">Share Screen</button>
+        <button onclick="captureVideo()">Capture Video</button>
+    </section>
+    <script>
+        function startCall() {
+            alert("Call started!");
+        }
+        function endCall() {
+            alert("Call ended!");
+        }
+        function shareScreen() {
+            alert("Screen sharing started!");
+        }
+        function captureVideo() {
+            alert("Video captured!");
+        }
+
+        // Whiteboard functionality
+        const canvas = document.getElementById("whiteboard");
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", () => drawing = true);
+        canvas.addEventListener("mouseup", () => drawing = false);
+        canvas.addEventListener("mousemove", draw);
+
+        function draw(event) {
+            if (!drawing) return;
+            ctx.lineWidth = 2;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "black";
+            ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        }
+
+        // Chat functionality
+        function sendMessage() {
+            const chatBox = document.getElementById("chat-box");
+            const chatInput = document.getElementById("chat-input");
+            if (chatInput.value.trim() !== "") {
+                const message = document.createElement("p");
+                message.textContent = chatInput.value;
+                chatBox.appendChild(message);
+                chatInput.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
